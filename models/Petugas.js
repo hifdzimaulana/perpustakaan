@@ -3,9 +3,9 @@ const db = require('../config/database')
 
 const Petugas = db.define("petugas", {
     id: {
-        type: Sequelize.CHAR,
-        allowNull: true,
-        primaryKey: true
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
     nama: {
         type: Sequelize.STRING,

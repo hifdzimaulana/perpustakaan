@@ -5,7 +5,8 @@ module.exports = {
             console.log(err)
             return response.json({
                 success: 0,
-                data: err
+                data: {},
+                error: err
             })
         }
 
