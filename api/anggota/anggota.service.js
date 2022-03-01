@@ -17,7 +17,7 @@ module.exports = {
     ,
 
     get_by_id: function (id, callback) {
-        model.findOne({ where: { id } })
+        model.findByPk(id)
             .then(result => callback(null, result))
             .catch(error => callback(error))
     }
