@@ -5,7 +5,8 @@ const {
     add,
     get,
     get_by_id,
-    update
+    update,
+    del
 } = require('./peminjaman.service')
 const { service_callback, response_format } = require('../_utils')
 
