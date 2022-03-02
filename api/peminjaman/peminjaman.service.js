@@ -30,11 +30,14 @@ module.exports = {
             const field = `${key.substring(3)}.id`
             data[key] ? params.push(`${field} = ${data[key]}`) : null
         }
-        db.query(
-            `SELECT * FROM anggota, buku, petugas WHERE ${params.join(" AND ")}`
-        )
-            .then(result => callback(null, result[0][0]))
-            .catch(error => callback(error))
+        if (params == true) {
+            db.query(
+                `SELECT * FROM anggota, buku, petugas WHERE ${params.join(" AND ")}`
+            )
+                .then(result => callback(null, result[0][0]))
+                .catch(error => callback(error))
+        }
+        else return callback(null, 1)
     }
     ,
 

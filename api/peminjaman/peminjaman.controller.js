@@ -45,17 +45,20 @@ module.exports = {
         const data = { id, id_anggota, id_petugas, id_buku, tanggal_pinjam, tanggal_kembali }
         validate_ref_ids({ id_anggota, id_petugas, id_buku }, (error, result) => {
             if (result) {
+                let prev_id_buku = null;
+                get_by_id(id, (error, result) => {
+                    if (error) return service_callback(error, result, res)
+                    else prev_id_buku = result.id_buku
+                })
                 update(data, (error, result) => {
                     if (result) {
-                        get_by_id(id, (error, result) => {
-                            if ((id_buku) && (result.id_buku != id_buku)) {
-                                stok_inc(result.id_buku)
-                                stok_dec(id_buku)
-                            }
-                            else return service_callback(error, result, res)
-                        })
+                        if ((id_buku) && (prev_id_buku != id_buku)) {
+                            stok_inc(prev_id_buku, (error, result) => { if (error) return response_format(res, 0, error, {}) })
+                            stok_dec(id_buku, (error, result) => { if (error) return response_format(res, 0, error, {}) })
+                        }
+                        return service_callback(error, result, res)
                     }
-                    else return response_format(res, 0, !result ? `Couldn't find peminjaman row with id ${id}` : {}, error || {})
+                    else return response_format(res, 1, !result ? {} : {}, error || { rowAffected: 0 })
                 })
 
             }
@@ -65,11 +68,19 @@ module.exports = {
     ,
 
     controller_delete: function (req, res) {
-        del(req.body.id, (err, result) => {
-            if (!result) {
-                return response_format(res, 0, `Couldn't find peminjaman with id ${req.body.id}`).status(404)
+        let id_buku = null
+        get_by_id(req.body.id, (error, result) => {
+            if (error) return service_callback(error, result, res)
+            else id_buku = result.id_buku
+        })
+        del(req.body.id, (error, result) => {
+            if (result) {
+                if (result) {
+                    stok_inc(id_buku, (error, result) => service_callback(error, result, res))
+                }
+                else return service_callback(error, result, res)
             }
-            else return service_callback(err, result, res)
+            else return service_callback(error, result, res)
         })
     }
 
