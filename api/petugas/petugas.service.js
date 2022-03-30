@@ -2,7 +2,7 @@ const model = require('../../models/Petugas')
 
 module.exports = {
 
-    function(data, callback) {
+    add: function (data, callback) {
         model.create(data)
             .then(result => callback(null, result))
             .catch(error => callback(error))
