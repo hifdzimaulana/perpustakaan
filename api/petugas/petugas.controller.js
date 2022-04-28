@@ -36,8 +36,14 @@ module.exports = {
     ,
 
     controller_update: function (req, res) {
-        var { id, nama, jabatan, telepon } = req.body
-        const data = { id, nama, jabatan, telepon }
+        var { id, nama, jabatan, telepon, password } = req.body
+        const data = {
+            id,
+            nama,
+            jabatan,
+            telepon,
+            password: password ? bcrypt.hashSync(password, bcrypt.genSaltSync(10)) : undefined
+        }
         update(data, (err, result) => {
             if (!result[0]) return response_format(res, 0, `Couldn't find petugas with id ${id}`)
             else return service_callback(err, result, res)
