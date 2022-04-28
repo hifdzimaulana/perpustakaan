@@ -20,6 +20,10 @@ const Buku = db.define("buku", {
         type: Sequelize.STRING,
         allowNull: false
     },
+    cover_url: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+    },
     stok: {
         type: Sequelize.INTEGER,
         allowNull: false
