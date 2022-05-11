@@ -10,8 +10,8 @@ const { service_callback, response_format } = require('../_utils')
 module.exports = {
 
     controller_add: function (req, res) {
-        var { judul, pengarang, penerbit, stok } = req.body
-        const data = { judul, pengarang, penerbit, stok }
+        var { judul, pengarang, penerbit, stok, cover } = req.body
+        const data = { judul, pengarang, penerbit, stok, cover }
         add(data, (err, result) => service_callback(err, result, res))
     }
     ,
@@ -27,8 +27,8 @@ module.exports = {
     ,
 
     controller_update: function (req, res) {
-        var { id, judul, penulis, penerbit, stok } = req.body
-        const data = { id, judul, penulis, penerbit, stok }
+        var { id, judul, penulis, penerbit, stok, cover } = req.body
+        const data = { id, judul, penulis, penerbit, stok, cover }
         update(data, (err, result) => {
             if (!result[0]) {
                 return response_format(res, 0, `Couldn't find buku with id ${id}`).status(404)
